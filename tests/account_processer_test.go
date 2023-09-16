@@ -52,8 +52,3 @@ func TestProcessAccounts(t *testing.T) {
 		assertIntegers(t, len(accounts), 2)
 	})
 }
-
-func cleanup() {
-	accountService := services.NewAccountService()
-	accountService.DeleteAllAccounts()
-}
