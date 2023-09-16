@@ -84,7 +84,7 @@ func TestTransferController_CreateTransfer(t *testing.T) {
 	}
 
 	requestBody := fmt.Sprintf(`{"fromAccountID": "%s", "toAccountID": "%s", "amount": "%f"}`, transfer.From, transfer.To, transfer.Amount)
-	fmt.Println(requestBody)
+
 	// Create a test request
 	req, _ := http.NewRequest("POST", "/", io.Reader(bytes.NewBuffer([]byte(requestBody))))
 	w := httptest.NewRecorder()
