@@ -47,7 +47,11 @@ func (t TransferController) CreateTransfer(c *gin.Context) {
 	if err := transferService.CreateTransfer(&transfer, *services.NewAccountService()); err != nil {
 		response["message"] = "Creating a new transfer failed."
 		response["error"] = err.Error()
-		c.JSON(http.StatusInternalServerError, response)
+		status := http.StatusInternalServerError
+		if err == models.ErrInsufficientBalance {
+			status = http.StatusBadRequest
+		}
+		c.JSON(status, response)
 		return
 	}
 
