@@ -4,6 +4,7 @@ package services
 
 import (
 	"sync"
+	"time"
 
 	"github.com/mohamedsaberibrahim/basic-payment-system/models"
 	"github.com/mohamedsaberibrahim/basic-payment-system/storage"
@@ -28,7 +29,7 @@ func (t *TransferService) CreateTransfer(transfer *models.Transfer, accountServi
 	defer t.mutex.Unlock()
 
 	fromAccount, _ := accountService.GetAccount(transfer.From)
-	toAccount, _ := accountService.GetAccount(transfer.From)
+	toAccount, _ := accountService.GetAccount(transfer.To)
 
 	if fromAccount == nil {
 		return models.ErrAccountNotFound
@@ -40,7 +41,13 @@ func (t *TransferService) CreateTransfer(transfer *models.Transfer, accountServi
 	if fromAccount.Balance < transfer.Amount {
 		return models.ErrInsufficientBalance
 	}
+
+	if toAccount.Balance+transfer.Amount <= 0 {
+		return models.ErrInsufficientBalance
+	}
+
 	transfer.ID = models.NewUUID()
+	transfer.CreatedAt = time.Now()
 	t.transferStore.CreateTransfer(*transfer)
 	accountService.UpdateBalance(transfer.From, -transfer.Amount)
 	accountService.UpdateBalance(transfer.To, transfer.Amount)

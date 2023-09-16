@@ -4,6 +4,7 @@ package models
 
 import (
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 )
@@ -14,10 +15,11 @@ var (
 
 // A Transfer represents a payment transfer with ID, from account ID, to account ID, and amount.
 type Transfer struct {
-	ID     string  `json:"id,omitempty"`
-	From   string  `json:"fromAccountID"`
-	To     string  `json:"toAccountID"`
-	Amount float64 `json:"amount,string"`
+	ID        string    `json:"id,omitempty"`
+	From      string    `json:"fromAccountID"`
+	To        string    `json:"toAccountID"`
+	Amount    float64   `json:"amount,string"`
+	CreatedAt time.Time `json:"createdAt,omitempty"`
 }
 
 // NewUUID generates a new UUID.
