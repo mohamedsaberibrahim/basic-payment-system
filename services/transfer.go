@@ -24,7 +24,7 @@ func NewTransferService() *TransferService {
 }
 
 // CreateTransfer creates a new transfer in the storage.
-func (t *TransferService) CreateTransfer(transfer *models.Transfer, accountService AccountService) error {
+func (t *TransferService) CreateTransfer(transfer models.Transfer, accountService AccountService) error {
 	t.mutex.Lock()
 	defer t.mutex.Unlock()
 
@@ -48,7 +48,7 @@ func (t *TransferService) CreateTransfer(transfer *models.Transfer, accountServi
 
 	transfer.ID = models.NewUUID()
 	transfer.CreatedAt = time.Now()
-	t.transferStore.CreateTransfer(*transfer)
+	t.transferStore.CreateTransfer(transfer)
 	accountService.UpdateBalance(transfer.From, -transfer.Amount)
 	accountService.UpdateBalance(transfer.To, transfer.Amount)
 	return nil

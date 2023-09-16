@@ -30,7 +30,7 @@ func (a *AccountService) GetAccount(id string) (*models.Account, error) {
 }
 
 // CreateAccount creates a new account in the storage.
-func (a *AccountService) CreateAccount(account models.Account) error {
+func (a *AccountService) CreateAccount(account models.Account) (*models.Account, error) {
 	return a.accountStore.CreateAccount(account)
 }
 
@@ -42,4 +42,9 @@ func (a *AccountService) UpdateBalance(id string, amount float64) error {
 	}
 	account.Balance += amount
 	return a.accountStore.UpdateAccount(*account)
+}
+
+// DeleteAllAccounts deletes all accounts from the storage.
+func (a *AccountService) DeleteAllAccounts() error {
+	return a.accountStore.DeleteAllAccounts()
 }

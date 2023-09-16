@@ -42,15 +42,15 @@ func (s *AccountStore) GetAccount(id string) (*models.Account, error) {
 }
 
 // CreateAccount creates a new account in the storage.
-func (s *AccountStore) CreateAccount(account models.Account) error {
+func (s *AccountStore) CreateAccount(account models.Account) (*models.Account, error) {
 	s.Lock()
 	defer s.Unlock()
 
 	if _, ok := s.accounts[account.ID]; ok {
-		return models.ErrAccountAlreadyExists
+		return nil, models.ErrAccountAlreadyExists
 	}
 	s.accounts[account.ID] = account
-	return nil
+	return &account, nil
 }
 
 // ListAccounts retrieves all accounts from the storage.
@@ -70,5 +70,13 @@ func (s *AccountStore) UpdateAccount(account models.Account) error {
 	s.Lock()
 	defer s.Unlock()
 	s.accounts[account.ID] = account
+	return nil
+}
+
+// DeleteAllAccounts deletes all accounts from the storage.
+func (s *AccountStore) DeleteAllAccounts() error {
+	s.Lock()
+	defer s.Unlock()
+	s.accounts = make(map[string]models.Account)
 	return nil
 }

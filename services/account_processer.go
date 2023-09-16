@@ -27,6 +27,7 @@ func ProcessAccounts(url string, numWorkers int) {
 	// Start a goroutine to parse the JSON data and send the accounts to the channel
 	accounts := parseAccounts(body)
 
+	fmt.Printf("Processing accounts into system no. of accounts %d...\n", len(accounts))
 	// Start a goroutine to process the accounts concurrently
 	processAccountsConcurrently(accounts, numWorkers)
 
@@ -73,7 +74,8 @@ func parseAccounts(body []byte) []models.Account {
 	var accounts []models.Account
 	err := json.Unmarshal(body, &accounts)
 	if err != nil {
-		return nil
+		fmt.Println("Error parsing accounts: ", err.Error())
+		os.Exit(1)
 	}
 	return accounts
 }
@@ -83,7 +85,7 @@ func processWorker(accountsChannel chan models.Account, wg *sync.WaitGroup) {
 	accountService := NewAccountService()
 
 	for acc := range accountsChannel {
-		err := accountService.CreateAccount(acc)
+		_, err := accountService.CreateAccount(acc)
 		if err != nil {
 			fmt.Println("Error creating account: ", err.Error())
 		}

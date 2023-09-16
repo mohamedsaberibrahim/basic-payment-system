@@ -44,7 +44,7 @@ func (t TransferController) CreateTransfer(c *gin.Context) {
 		return
 	}
 
-	if err := transferService.CreateTransfer(&transfer, *services.NewAccountService()); err != nil {
+	if err := transferService.CreateTransfer(transfer, *services.NewAccountService()); err != nil {
 		response["message"] = "Creating a new transfer failed."
 		response["error"] = err.Error()
 		status := http.StatusInternalServerError
