@@ -4,7 +4,6 @@
 package storage
 
 import (
-	"fmt"
 	"sync"
 
 	"github.com/mohamedsaberibrahim/basic-payment-system/models"
@@ -24,12 +23,10 @@ var AccountStoreInstance *AccountStore
 // NewAccountStorage creates a new instance of Storage.
 func NewAccountStorage() *AccountStore {
 	if AccountStoreInstance == nil {
-		fmt.Println("Creating new account storage instance")
 		AccountStoreInstance = &AccountStore{
 			accounts: make(map[string]models.Account),
 		}
 	}
-	fmt.Println("Returning existing account storage instance")
 	return AccountStoreInstance
 }
 
@@ -49,7 +46,6 @@ func (s *AccountStore) CreateAccount(account models.Account) error {
 	s.Lock()
 	defer s.Unlock()
 
-	fmt.Println("Creating account: ", account.ID)
 	if _, ok := s.accounts[account.ID]; ok {
 		return models.ErrAccountAlreadyExists
 	}
@@ -59,9 +55,9 @@ func (s *AccountStore) CreateAccount(account models.Account) error {
 
 // ListAccounts retrieves all accounts from the storage.
 func (s *AccountStore) ListAccounts() ([]models.Account, error) {
-	fmt.Println("Executing ListAccounts")
 	s.RLock()
 	defer s.RUnlock()
+
 	var accounts []models.Account
 	for _, account := range s.accounts {
 		accounts = append(accounts, account)

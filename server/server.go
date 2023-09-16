@@ -2,7 +2,11 @@
 // This package is used to start the application.
 package server
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 const (
 	// DefaultPort is the default port to listen on.
@@ -12,6 +16,9 @@ const (
 func Init() {
 	// Set the Gin mode to release.
 	gin.SetMode(gin.ReleaseMode)
+
+	fmt.Println("Starting the application...")
+	fmt.Println("Server is running on port", DefaultPort)
 
 	// Initialize the application.
 	r := NewRouter()
