@@ -5,12 +5,13 @@ package models
 import "errors"
 
 var (
-	ErrAccountNotFound = errors.New("account not found")
+	ErrAccountNotFound      = errors.New("account not found")
+	ErrAccountAlreadyExists = errors.New("account already exists")
 )
 
 // An Account represents a payment account with ID, Name, and Balance with struct tags to map the JSON data to the struct.
 type Account struct {
-	ID      string `json:"id"`
-	Name    string `json:"name"`
-	Balance string `json:"balance"`
+	ID      string  `json:"id"`
+	Name    string  `json:"name"`
+	Balance float64 `json:"balance,string"`
 }

@@ -86,11 +86,11 @@ func processWorker(accountsChannel chan models.Account, wg *sync.WaitGroup) {
 	accountService := NewAccountService()
 
 	for acc := range accountsChannel {
-		err := accountService.CreateAccount(&acc)
+		err := accountService.CreateAccount(acc)
 		if err != nil {
-			panic(err)
+			fmt.Println("Error creating account: %s", err.Error())
 		}
-		fmt.Println("Processing account:", acc)
+		fmt.Println("Processing account:", &acc, acc)
 	}
 }
 

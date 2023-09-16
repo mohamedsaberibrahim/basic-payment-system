@@ -16,10 +16,18 @@ func NewRouter() *gin.Engine {
 
 	router.GET("/", health.Status)
 
-	accountGroup := router.Group("/accounts")
+	accountsGroup := router.Group("/accounts")
 	{
-		account := new(controllers.AccountController)
-		accountGroup.GET("", account.GetAllAccounts)
+		controller := new(controllers.AccountController)
+		accountsGroup.GET("", controller.GetAllAccounts)
 	}
+
+	transfersGroup := router.Group("/transfers")
+	{
+		controller := new(controllers.TransferController)
+		transfersGroup.GET("", controller.GetAllTransfers)
+		transfersGroup.POST("", controller.CreateTransfer)
+	}
+
 	return router
 }

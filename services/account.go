@@ -20,7 +20,7 @@ func NewAccountService() *AccountService {
 }
 
 // GetAllAccounts retrieves all accounts from the storage.
-func (a *AccountService) GetAllAccounts() ([]*models.Account, error) {
+func (a *AccountService) GetAllAccounts() ([]models.Account, error) {
 	return a.accountStore.ListAccounts()
 }
 
@@ -30,6 +30,16 @@ func (a *AccountService) GetAccount(id string) (*models.Account, error) {
 }
 
 // CreateAccount creates a new account in the storage.
-func (a *AccountService) CreateAccount(account *models.Account) error {
+func (a *AccountService) CreateAccount(account models.Account) error {
 	return a.accountStore.CreateAccount(account)
+}
+
+// UpdateBalance updates an account's balance in the storage.
+func (a *AccountService) UpdateBalance(id string, amount float64) error {
+	account, err := a.accountStore.GetAccount(id)
+	if err != nil {
+		return err
+	}
+	account.Balance += amount
+	return a.accountStore.UpdateAccount(*account)
 }
